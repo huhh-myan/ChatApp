@@ -1,0 +1,39 @@
+generator client {
+  provider               = "prisma-client"
+  output                 = "../src/generated/prisma"
+  //generatedFileExtension = "ts" -- works without this
+  //importFileExtension    = "" -- works without this
+  //moduleFormat           = "cjs" -- works without this
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Chat {
+  id      Int    @id @default(autoincrement())
+  message String
+  roomId  Int
+  userId  String
+  Room    Room   @relation(fields: [roomId], references: [id])
+  User    User   @relation(fields: [userId], references: [id])
+}
+
+model Room {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  adminId   String
+  Chat      Chat[]
+  User      User     @relation(fields: [adminId], references: [id])
+}
+
+model User {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String
+  name     String?
+  photo    String?
+  Chat     Chat[]
+  Room     Room[]
+}
