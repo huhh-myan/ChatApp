@@ -1,2 +1,2 @@
 export const BACKEND_URL = "http://localhost:3001";
-export const WS_URL = "ws://localhost:8080/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmOWY3YzcwYS1kZWZkLTRmOWQtYTI4ZS1iYjZmMmU5YjM2MWYiLCJpYXQiOjE3NzQyOTA4NzN9.kEqonhJqSsHnmydTkzOgsRXv477jlqb5zaMihu6G8po";
+export const WS_URL = "ws://localhost:8080";
