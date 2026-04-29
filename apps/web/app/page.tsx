@@ -1,67 +1,65 @@
-"use client"
-// import Image, { type ImageProps } from "next/image";
-//import { Button } from "@repo/ui/button";
-import { Card } from "@repo/ui/card";
-//import styles from "./page.module.css";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+"use client";
 
-// type Props = Omit<ImageProps, "src"> & {
-//   srcLight: string;
-//   srcDark: string;
-// };
-
-
-//dark mode light mode convertion
-// const ThemeImage = (props: Props) => {
-//   const { srcLight, srcDark, ...rest } = props;
-
-//   return (
-//     <>
-//       <Image {...rest} src={srcLight} className="imgLight" />
-//       <Image {...rest} src={srcDark} className="imgDark" />
-//     </>
-//   );
-// };
-
+import Link from "next/link";
 
 export default function Home() {
-
-  const [roomName, setRoomName] = useState("");
-  const router = useRouter();
-
-
   return (
-    <div>
-      Hello There
-      <div>
-        <Card className="" title="CARD TEST 1" href="sasd">This is a card test stay awake!</Card>
+    <main className="relative min-h-screen overflow-hidden bg-slate-950 text-slate-100">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-24 top-12 h-72 w-72 animate-pulse rounded-full bg-cyan-500/20 blur-3xl" />
+        <div className="absolute -right-20 bottom-10 h-80 w-80 animate-pulse rounded-full bg-blue-500/20 blur-3xl" />
       </div>
 
-      <div style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        width: "100vw"
-      }}>
-      
-        <input style={{padding:10, margin:20}} value={roomName} onChange={(e)=>{
-          setRoomName(e.target.value);
-        }} type="text" placeholder="ROOM Name"/>
-        
-        
-        <button style={{padding:5, margin:2}} onClick={()=>{
-          router.push(`/room/${roomName}`)
-        }}>JOIN ROOM</button>
-      
-      </div>
-y
+      <header className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/70 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10">
+          <div className="flex items-center gap-3">
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 shadow-lg shadow-blue-900/40" />
+            <p className="text-lg font-bold tracking-wide text-white">ChatApp</p>
+          </div>
+          <nav className="flex items-center gap-3">
+            <Link href="/signin" className="rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm font-semibold hover:bg-white/10">
+              Sign in
+            </Link>
+            <Link href="/signup" className="rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-900/30 hover:brightness-110">
+              Sign up
+            </Link>
+          </nav>
+        </div>
+        <div className="h-0.5 w-full overflow-hidden bg-white/5">
+          <div className="h-full w-1/3 animate-[pulse_2s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+        </div>
+      </header>
 
-      <div>
-        
-      </div>
-    </div>
+      <section className="relative mx-auto flex min-h-[calc(100vh-180px)] w-full max-w-7xl flex-col items-center justify-center px-6 text-center md:px-10">
+        <p className="mb-5 rounded-full border border-cyan-300/30 bg-cyan-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-200">
+          Real-time collaboration
+        </p>
+
+        <h1 className="mb-5 bg-gradient-to-r from-cyan-200 via-blue-100 to-cyan-200 bg-clip-text text-5xl font-extrabold leading-tight text-transparent md:text-7xl">
+          Chat App
+        </h1>
+
+        <p className="max-w-2xl text-base text-slate-300 md:text-lg">
+          Create rooms, join team conversations, and message instantly with a modern real-time experience built for speed and focus.
+        </p>
+
+        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+          <Link href="/signup" className="group rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 px-7 py-3 text-base font-bold text-white shadow-xl shadow-blue-900/40 transition hover:-translate-y-0.5 hover:brightness-110">
+            Get Started
+            <span className="ml-2 inline-block transition group-hover:translate-x-1">→</span>
+          </Link>
+          <Link href="/signin" className="rounded-2xl border border-white/20 bg-white/5 px-7 py-3 text-base font-semibold text-slate-100 transition hover:bg-white/10">
+            I already have an account
+          </Link>
+        </div>
+      </section>
+
+      <footer className="border-t border-white/10 bg-slate-950/70">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-5 text-sm text-slate-400 md:flex-row md:px-10">
+          <p>© {new Date().getFullYear()} ChatApp. Built for realtime conversations.</p>
+          <p className="text-slate-500">Fast • Secure • Collaborative</p>
+        </div>
+      </footer>
+    </main>
   );
 }

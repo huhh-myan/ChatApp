@@ -24,8 +24,13 @@ export function ChatRoomClient({
 }){
 
     const [chats, setChats] = useState(messages);
-    const {socket, loading} = useSocket();
+    const [token, setToken] = useState<string | null>(null);
+    const {socket, loading} = useSocket(token);
     const [currentMessage, setCurrentMessage] = useState<string>("");
+
+    useEffect(() => {
+        setToken(localStorage.getItem("token"));
+    }, []);
 
     useEffect(()=>{
         if(socket && !loading){
