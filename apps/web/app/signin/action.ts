@@ -19,8 +19,8 @@ export async function submitSignin(email:string, password:string) {
             return { error: data.message || "SignIn failed" };
         }
 
-        return { success: true, message: data.message };
-    } catch (error) {
+        return { success: true, message: data.message, token: data.token };
+    } catch {
         return { error: "Something went wrong connecting to the backend." };
     }
 }
