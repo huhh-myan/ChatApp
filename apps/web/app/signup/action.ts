@@ -20,7 +20,7 @@ export async function submitSignup(email:string, password:string, name:string) {
         }
 
         return { success: true, message: data.message };
-    } catch (error) {
+    } catch {
         return { error: "Something went wrong connecting to the backend." };
     }
 }

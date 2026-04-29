@@ -1,67 +1,36 @@
-"use client"
-// import Image, { type ImageProps } from "next/image";
-//import { Button } from "@repo/ui/button";
-import { Card } from "@repo/ui/card";
-//import styles from "./page.module.css";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+"use client";
 
-// type Props = Omit<ImageProps, "src"> & {
-//   srcLight: string;
-//   srcDark: string;
-// };
-
-
-//dark mode light mode convertion
-// const ThemeImage = (props: Props) => {
-//   const { srcLight, srcDark, ...rest } = props;
-
-//   return (
-//     <>
-//       <Image {...rest} src={srcLight} className="imgLight" />
-//       <Image {...rest} src={srcDark} className="imgDark" />
-//     </>
-//   );
-// };
-
+import Link from "next/link";
 
 export default function Home() {
-
-  const [roomName, setRoomName] = useState("");
-  const router = useRouter();
-
-
   return (
-    <div>
-      Hello There
-      <div>
-        <Card className="" title="CARD TEST 1" href="sasd">This is a card test stay awake!</Card>
-      </div>
+    <main className="min-h-screen bg-slate-950 text-slate-100">
+      <div className="mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 py-16 text-center">
+        <div className="mb-6 inline-flex rounded-full border border-blue-400/40 bg-blue-500/10 px-4 py-1 text-sm text-blue-200">
+          Real-time team chat
+        </div>
+        <h1 className="bg-gradient-to-r from-blue-300 to-cyan-200 bg-clip-text text-5xl font-bold text-transparent md:text-6xl">
+          Welcome to ChatApp
+        </h1>
+        <p className="mt-6 max-w-2xl text-lg text-slate-300">
+          Create rooms, join conversations, and collaborate instantly with your team across WebSocket-powered channels.
+        </p>
 
-      <div style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        width: "100vw"
-      }}>
-      
-        <input style={{padding:10, margin:20}} value={roomName} onChange={(e)=>{
-          setRoomName(e.target.value);
-        }} type="text" placeholder="ROOM Name"/>
-        
-        
-        <button style={{padding:5, margin:2}} onClick={()=>{
-          router.push(`/room/${roomName}`)
-        }}>JOIN ROOM</button>
-      
+        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+          <Link
+            href="/signin"
+            className="rounded-xl bg-blue-500 px-8 py-3 text-lg font-semibold text-white shadow-lg shadow-blue-700/30 transition hover:bg-blue-400"
+          >
+            Sign in
+          </Link>
+          <Link
+            href="/signup"
+            className="rounded-xl border border-slate-600 bg-slate-900 px-8 py-3 text-lg font-semibold text-slate-200 transition hover:border-blue-400 hover:text-white"
+          >
+            Create account
+          </Link>
+        </div>
       </div>
-y
-
-      <div>
-        
-      </div>
-    </div>
+    </main>
   );
 }
