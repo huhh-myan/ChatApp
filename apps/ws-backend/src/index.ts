@@ -120,6 +120,7 @@ wss.on('connection', function connection(ws, request){
                     // single message --- includes returns only true or false executed once, doesnt matter how many times room occurs.
                     user.ws.send(JSON.stringify({
                         type: "CHAT",
+                        userId,
                         roomId,
                         message
                     }))

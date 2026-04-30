@@ -7,17 +7,23 @@ import { prismaClient } from "@repo/db";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "@repo/backend-common/config";
 import e from "express";
+import cors from "cors";
 
 
 const port = 3001;
 const app = express();
 
 //express body and json parser to parse incoming data
+
+app.use(cors({
+    origin:"http://localhost:3000",
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.get('/', (req,res)=>{
+app.get('/', middleware, (req,res)=>{
+    console.log("Reached /")
     res.send('Hello There!');
 })
 
@@ -34,10 +40,9 @@ app.post('/signup',async (req,res)=>{
     //console.log(2,req.body.email, req.body.password);
 
     if(!parsedData.success){
-        res.json({
+        return res.status(400).json({
             message:"Incorrect Inputs"
         })
-        return ;
     }
 
     //function to hash password
@@ -51,6 +56,7 @@ app.post('/signup',async (req,res)=>{
         //console.log(3,req.body.email, req.body.password);
         const user = await prismaClient.user.create({
             data:{
+                name: parsedData.data.name,
                 email: parsedData.data.email,
                 password: hashedPassword
             },
@@ -65,7 +71,7 @@ app.post('/signup',async (req,res)=>{
     }catch(e){
         //console.error("PRISMA ERROR", e);
 
-        return res.status(411).json({
+        return res.status(409).json({
             e,
             message:"User Already Exists!"
         })
@@ -92,10 +98,10 @@ app.post('/signin',async (req,res)=>{
     const parsedData = SigninSchema.safeParse(req.body);
     if(!parsedData.success){
         // is this return type better or return res.json({})
-        res.status(411).json({
+        return res.status(411).json({
             message:"Incorrect Inputs"
         })
-        return ;
+        
     }
 
     //is below the right way to verify password or verify them together
@@ -119,7 +125,7 @@ app.post('/signin',async (req,res)=>{
     const passwordMatch = await bcrypt.compare(parsedData.data.password, user.password);
 
     if(!passwordMatch){
-        return res.json({
+        return res.status(400).json({
             message: "Invalid Password!"
         })
     }else{
@@ -147,6 +153,9 @@ app.post('/signin',async (req,res)=>{
 app.post('/create-room', middleware, async (req, res)=>{
     //this endpoint guarded by middleware(function) that checks for signing by verifying token -- done
     const roomName = req.body.slug;
+    //console.log(roomName);
+    //console.log("request reached here");
+    //this above data is not being safe parsed 
 
     //to make a new room entry in the table
     //in this funtion slug should be input by user -- i think zod schema required for Room incoming data,
@@ -245,8 +254,13 @@ app.get("/chat/:roomId", middleware, async (req, res)=>{
                 id: true,
                 message: true,
                 roomId: true,
-                userId: true
-            }
+                User: {
+                    select: {
+                        id: true,
+                        name: true,
+                    }
+                },
+            }, 
         })
 
         //yep both feel right
@@ -268,7 +282,7 @@ app.get("/chat/:roomId", middleware, async (req, res)=>{
 //create-rooom -- shouldnt this be under ws backend or is that after forming of room
 
 //returns room id from roomname
-app.get("/room/:slug", middleware,async(req, res)=>{
+app.get("/room/:slug", middleware,async (req, res)=>{
 
     //This below shit is there in @types/express express-tests.ts----- wow
     //     // Params defaults to typed object
@@ -306,6 +320,41 @@ app.get("/room/:slug", middleware,async(req, res)=>{
     }
 
 })
+
+
+
+
+
+
+
+// /room/list is also /room/slug
+
+
+app.get("/roomsList", async (req, res)=>{
+    // console.log("request hitting room/list")
+    try{
+        // const roomList = await prismaClient.room.findUnique({
+        //     where:{
+        //         slug: 'honeypot',
+        //     },
+        // });
+        const roomsList = await prismaClient.room.findMany();
+        // console.log(roomsList);
+        return res.json(roomsList);
+    }catch(e){
+        return res.json({
+            e,
+            message: "Unable to get rooms!"
+        })
+    }
+})
+
+//ToDo
+// \\ change room table to store users? because if i do this and scale then  people on diff be server will be on same room and no comm between
+// 
+
+
+
 
 
 app.listen(port,()=>{
